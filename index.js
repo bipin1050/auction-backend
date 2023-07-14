@@ -6,7 +6,8 @@ const cors = require("cors");
 var path = require("path");
 require('dotenv').config();
 const userRouter = require("./router/userRouter");
-// const cookieparser = require("cookie-parser");
+const productRouter = require("./router/productRouter");
+const cookieparser = require("cookie-parser");
 
 app.use(
   cors({
@@ -16,7 +17,8 @@ app.use(
 );
 
 app.use(bodyParser.json());
-// app.use(cookieparser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieparser());
 
 mongoose.set("strictQuery", false);
 mongoose
@@ -33,6 +35,8 @@ var htmlpath = path.join(__dirname, "public");
 app.use(express.static(htmlpath));
 
 app.use("/user", userRouter);
+app.use("/product", productRouter);
+
 
 // const userRouter = require("./routers/userRouter");
 // const todoRouter = require("./routers/todoRouter");

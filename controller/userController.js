@@ -46,6 +46,7 @@ module.exports.login = async function login(req, res) {
             message: "User logged in succesfully",
             jwt: token,
             username: user.username,
+            name: user.name,
           });
         } else {
           return res.status(400).json({
