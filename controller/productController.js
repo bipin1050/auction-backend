@@ -430,6 +430,46 @@ const placeBid = async (req, res) => {
   }
 };
 
+const cancelBid = async (req, res) => {
+  try {
+    const { productId, bidderId } = req.body;
+    const product = await productModel.findById(productId);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    console.log("bidders", product.bidders)
+    console.log("bidderId", bidderId);
+
+    const bidderIndex = product.bidders.findIndex(
+      (bidder) => bidder.id === bidderId
+    );
+    if (bidderIndex === -1) {
+      return res.status(404).json({ message: "Bidder not found" });
+    }
+
+    const bidAmount = product.bidders[bidderIndex].amount;
+    product.bidders.splice(bidderIndex, 1);
+    await product.save();
+
+    // Find the bidder's user model and update balance
+    const bidder = await userModel.findById(bidderId);
+
+    if (!bidder) {
+      return res.status(404).json({ message: "Bidder not found" });
+    }
+    bidder.balance += Number(bidAmount);
+    bidder.holdbalance -= bidAmount;
+    await bidder.save();
+
+    res.status(200).json({ message: "Bidder removed successfully" });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+}
+
 module.exports = {
   createProduct,
   getActiveBids,
@@ -439,4 +479,5 @@ module.exports = {
   getAllActiveBids,
   productDetails,
   placeBid,
+  cancelBid,
 };
