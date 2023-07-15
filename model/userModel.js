@@ -15,15 +15,21 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  balance : {
+  balance: {
     type: Number,
-    required : true,
-    default: 0
-  }
+    required: true,
+    default: 0,
+  },
+  holdbalance: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 userSchema.pre("save", async function (next) {
-  const salt = await bcrypt.genSalt();
+  const saltRounds = 10;
+  const salt = await bcrypt.genSalt(saltRounds);
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });

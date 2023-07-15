@@ -12,6 +12,9 @@ module.exports.verifyToken = async function verifyToken (req, res, next) {
         }
         // console.log(token, process.env.SECRET_KEY)
         const verified = jwt.verify(token, process.env.SECRET_KEY);
+        if (!verified) {
+          return res.status(403).send("Invalid token");
+        }
         req.user = verified;
         next();
     }catch(err){

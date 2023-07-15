@@ -44,6 +44,9 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  winner : {
+    type : String,
+  }
 });
 productSchema.pre("validate", function (next) {
     if (!this.enableBid && !this.enableInstantBuy)

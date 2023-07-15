@@ -6,7 +6,8 @@ const jwt = require("jsonwebtoken");
 const signup = async (req, res) => {
   try {
     let { name, username, password } = req.body;
-    //   console.log(dataObj)
+    console.log(name, username, password)
+    console.log("dataObj")
     let user = await userModel.create({ name, username, password });
     if (user) {
       return res.status(200).json({
@@ -33,6 +34,9 @@ const login = async (req, res) => {
       let user = await userModel.findOne({ username });
       if (user) {
         const auth = await bcrypt.compare(password, user.password);
+        console.log("Password:", password);
+        console.log("User Password:", user.password);
+        console.log("Auth Result:", auth);
         if (auth) {
           let uid = user["_id"];
           let maxAge = 5 * 24 * 60 * 60;
@@ -44,10 +48,12 @@ const login = async (req, res) => {
           });
           return res.status(200).json({
             message: "User logged in succesfully",
+            id: uid,
             jwt: token,
             username: user.username,
             name: user.name,
-            balance : user.balance,
+            balance: user.balance,
+            holdbalance: user.holdbalance,
           });
         } else {
           return res.status(400).json({
@@ -82,9 +88,11 @@ const loginWithToken = async (req, res) => {
       if (user) {
         return res.status(200).json({
           message: "User logged in succesfully",
-          name : user.name,
+          id: payload,
+          name: user.name,
           username: user.username,
-          balance : user.balance,
+          balance: user.balance,
+          holdbalance: user.holdbalance,
         });
       } else {
         return res.status(400).json({

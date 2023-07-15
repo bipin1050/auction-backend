@@ -8,6 +8,7 @@ require('dotenv').config();
 const userRouter = require("./router/userRouter");
 const productRouter = require("./router/productRouter");
 const cookieparser = require("cookie-parser");
+require("./controller/productScheduler");
 
 app.use(
   cors({
