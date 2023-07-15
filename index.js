@@ -12,7 +12,7 @@ require("./controller/productScheduler");
 
 app.use(
   cors({
-    origin: "https://brave-hoodie-frog.cyclic.app/",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
