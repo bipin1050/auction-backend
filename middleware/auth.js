@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
-// const { verifyToken } = require('../controller/userController');
-
 
 module.exports.verifyToken = async function verifyToken (req, res, next) {
     try{

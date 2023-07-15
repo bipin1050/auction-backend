@@ -15,6 +15,11 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  balance : {
+    type: Number,
+    required : true,
+    default: 0
+  }
 });
 
 userSchema.pre("save", async function (next) {

@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 //signup
-module.exports.signup = async function signup(req, res) {
+const signup = async (req, res) => {
   try {
     let { name, username, password } = req.body;
     //   console.log(dataObj)
@@ -26,7 +26,7 @@ module.exports.signup = async function signup(req, res) {
 };
 
 // Login
-module.exports.login = async function login(req, res) {
+const login = async (req, res) => {
   try {
     let { username, password } = req.body;
     if (username && password) {
@@ -47,6 +47,7 @@ module.exports.login = async function login(req, res) {
             jwt: token,
             username: user.username,
             name: user.name,
+            balance : user.balance,
           });
         } else {
           return res.status(400).json({
@@ -73,7 +74,7 @@ module.exports.login = async function login(req, res) {
   }
 };
 
-module.exports.loginWithToken = async function loginWithToken(req, res) {
+const loginWithToken = async (req, res) => {
   try {
     let { payload } = req.user;
     if (payload) {
@@ -83,6 +84,7 @@ module.exports.loginWithToken = async function loginWithToken(req, res) {
           message: "User logged in succesfully",
           name : user.name,
           username: user.username,
+          balance : user.balance,
         });
       } else {
         return res.status(400).json({
@@ -102,4 +104,37 @@ module.exports.loginWithToken = async function loginWithToken(req, res) {
       },
     });
   }
+};
+
+const addBalance = async (req, res) => {
+  try {
+    const { payload } = req.user;
+    let { balance } = req.body;
+    balance = Number(balance);
+    const user = await userModel.findById(payload);
+    console.log(balance)
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    user.balance += balance;
+    await user.save();
+
+    res.status(200).json({
+      message: "Balance added successfully",
+      user: user,
+    });
+  } catch (err) {
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+}
+
+module.exports = {
+  login,
+  signup,
+  loginWithToken,
+  addBalance,
 };
