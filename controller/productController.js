@@ -29,7 +29,7 @@ const createProduct = async (req, res) => {
 
     res.status(200).json({ message: "Product created successfully" });
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -80,7 +80,7 @@ const getActiveBids = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -117,7 +117,7 @@ const getClosedBids = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -277,7 +277,7 @@ const getAllActiveBids = async (req, res) => {
 
     res.status(200).json(products);
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -316,7 +316,7 @@ const productDetails = async (req, res) => {
 
     res.status(200).json(productDetails);
   } catch (error) {
-    console.log("error", error.message);
+    // console.log("error", error.message);
     return res.status(500).json({ error: error.message });
   }
 };
@@ -354,8 +354,8 @@ const placeBid = async (req, res) => {
     // Check if instant buy is enabled and the user wants to buy it instantly
     if (product.enableInstantBuy && buyType === "instantbuy") {
       const owner = await userModel.findById(product.userid);
-      console.log(owner);
-      console.log("instntBuy");
+      // console.log(owner);
+      // console.log("instntBuy");
 
       // Update the product status to closed
       product.status = "closed";
@@ -365,9 +365,9 @@ const placeBid = async (req, res) => {
 
       // Deduct the instant buy amount from the bidder's balance
       bidder.balance -= product.instantBuy;
-      console.log(owner.balance);
+      // console.log(owner.balance);
       owner.balance += product.instantBuy;
-      console.log(owner.balance);
+      // console.log(owner.balance);
 
       // Save the updated product and bidder
       await product.save();
@@ -438,8 +438,8 @@ const cancelBid = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
-    console.log("bidders", product.bidders)
-    console.log("bidderId", bidderId);
+    // console.log("bidders", product.bidders)
+    // console.log("bidderId", bidderId);
 
     const bidderIndex = product.bidders.findIndex(
       (bidder) => bidder.id === bidderId

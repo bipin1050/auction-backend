@@ -6,8 +6,8 @@ const jwt = require("jsonwebtoken");
 const signup = async (req, res) => {
   try {
     let { name, username, password } = req.body;
-    console.log(name, username, password)
-    console.log("dataObj")
+    // console.log(name, username, password)
+    // console.log("dataObj")
     let user = await userModel.create({ name, username, password });
     if (user) {
       return res.status(200).json({
@@ -33,10 +33,7 @@ const login = async (req, res) => {
     if (username && password) {
       let user = await userModel.findOne({ username });
       if (user) {
-        const auth = await bcrypt.compare(password, user.password, 10);
-        console.log("Password:", password);
-        console.log("User Password:", user.password);
-        console.log("Auth Result:", auth);
+        const auth = await bcrypt.compare(password, user.password);
         if (auth) {
           let uid = user["_id"];
           let maxAge = 5 * 24 * 60 * 60;
@@ -74,7 +71,7 @@ const login = async (req, res) => {
     return res.status(500).json({
       message: {
         err: err.message,
-        customMsg: "Something went wrong",
+        customMsg: "Something went wrong really",
       },
     });
   }
@@ -120,7 +117,7 @@ const addBalance = async (req, res) => {
     let { balance } = req.body;
     balance = Number(balance);
     const user = await userModel.findById(payload);
-    console.log(balance)
+    // console.log(balance)
     if (!user) {
       return res.status(404).json({
         message: "User not found",
