@@ -33,7 +33,7 @@ const login = async (req, res) => {
     if (username && password) {
       let user = await userModel.findOne({ username });
       if (user) {
-        const auth = await bcrypt.compare(password, user.password);
+        const auth = await bcrypt.compare(password, user.password, 10);
         console.log("Password:", password);
         console.log("User Password:", user.password);
         console.log("Auth Result:", auth);
